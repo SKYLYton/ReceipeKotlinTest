@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Receipe</string>
+
+    //main activity
+    <!--goods frg-->
+    <string name="search">Поиск рецептов</string>
+    <string name="looking_for">Что ищете?</string>
+    <string name="pieces">шт.</string>
+
+
+</resources>
