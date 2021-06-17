@@ -4,17 +4,16 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.aymarja.adapters.goods.RecipesAdapter
-import com.recipes.databinding.FragmentSearchRecipeBinding
+import com.receipe.databinding.FragmentSearchRecipeBinding
+import com.receipe.fragments.search_recipe.adapters.goods.OnClickItemListener
 import com.recipes.retrofit.model.recipe.Hit
-import com.recipes.retrofit.model.recipe.RecipeModel
 import com.recipes.retrofit.model.recipe.ResultRecipeModel
 
 class SearchRecipeFragment : Fragment() {
@@ -22,8 +21,7 @@ class SearchRecipeFragment : Fragment() {
     private var _binding: FragmentSearchRecipeBinding? = null
     private val binding: FragmentSearchRecipeBinding get() = _binding!!
     private lateinit var viewModel: SearchViewModel
-    private var list: List<Hit> = mutableListOf<Hit>()
-    private val adapter = RecipesAdapter(list)
+    private val adapter = RecipesAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,15 +45,14 @@ class SearchRecipeFragment : Fragment() {
     }
 
     private fun initControls() {
-
-        adapter.onClickItemListener = object : RecipesAdapter.OnClickItemListener{
-            override fun onClick(hit: Hit?, pos: Int) {
+        adapter.onClickItemListener = object : OnClickItemListener {
+            override fun onClick(orderModel: Hit?, pos: Int) {
 
             }
         }
         binding.recGoods.adapter = adapter
 
-        binding.editTextSearch.addTextChangedListener(object : TextWatcher{
+        binding.editTextSearch.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
 
@@ -63,8 +60,10 @@ class SearchRecipeFragment : Fragment() {
             }
 
             override fun afterTextChanged(s: Editable?) {
-                if(s?.length!! > 0) {
+                if (s.toString().isNotEmpty()) {
                     viewModel.search(s.toString())
+                } else {
+                    adapter.setList(emptyList())
                 }
             }
 
@@ -72,11 +71,10 @@ class SearchRecipeFragment : Fragment() {
     }
 
     private fun renderData(appState: AppState) {
-        when(appState){
+        when (appState) {
             is AppState.Success<*> -> {
                 val recipes = appState.model as ResultRecipeModel
-                list = recipes.hits
-                adapter.notifyDataSetChanged()
+                adapter.setList(recipes.hits)
             }
             is AppState.Loading -> {
             }

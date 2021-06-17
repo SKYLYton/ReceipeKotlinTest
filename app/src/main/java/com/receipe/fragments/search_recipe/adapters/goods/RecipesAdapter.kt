@@ -7,16 +7,20 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.receipe.R
+import com.receipe.fragments.search_recipe.adapters.goods.OnClickItemListener
 import com.recipes.retrofit.model.recipe.Hit
 import com.recipes.retrofit.model.recipe.RecipeModel
 
-class RecipesAdapter(private var list: List<Hit>) :
+class RecipesAdapter :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    private var list: List<Hit> = emptyList()
 
     var onClickItemListener: OnClickItemListener? = null
 
-    interface OnClickItemListener {
-        fun onClick(orderModel: Hit?, pos: Int)
+    fun setList(list: List<Hit>){
+        this.list = list
+        notifyDataSetChanged()
     }
 
     fun removeListener(){
@@ -36,8 +40,8 @@ class RecipesAdapter(private var list: List<Hit>) :
     private fun initItem(viewHolder: ViewHolder, position: Int) {
         val recipeModel: Hit = list[position]
 
-        viewHolder.textViewName.text = recipeModel.recipe?.label
-        viewHolder.textViewCalories.text = recipeModel.recipe?.calories.toString()
+        viewHolder.textViewName.text = recipeModel.recipe.label
+        viewHolder.textViewCalories.text = recipeModel.recipe.calories.toString()
 
         viewHolder.mainView.setOnClickListener {
             onClickItemListener?.onClick(recipeModel, position)

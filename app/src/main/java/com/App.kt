@@ -2,6 +2,7 @@ package com
 
 import android.app.Application
 import com.recipes.di.AppComponent
+import com.recipes.di.DaggerAppComponent
 
 class App : Application() {
     lateinit var appComponent: AppComponent
@@ -16,6 +17,6 @@ class App : Application() {
     }
 
     private fun initDagger() {
-        //appComponent = DaggerAppComponent.builder().build()
+        appComponent = DaggerAppComponent.builder().build()
     }
 }

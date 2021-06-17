@@ -2,9 +2,8 @@ package com.recipes.fragments.search_recipe
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.recipes.App
+import com.App
 import com.recipes.retrofit.model.ApiResponseListener
-import com.recipes.retrofit.model.recipe.RecipeModel
 import com.recipes.retrofit.model.recipe.ResultRecipeModel
 import retrofit2.Call
 import retrofit2.Response
@@ -12,7 +11,7 @@ import javax.inject.Inject
 
 class SearchViewModel(private val liveData: MutableLiveData<AppState> = MutableLiveData()) : ViewModel() {
 
-    @Inject val searchRestRepository: SearchRestRepositoryImpl? = null
+    @Inject lateinit var searchRestRepository: SearchRestRepositoryImpl
 
     fun getLiveData() = liveData
 
@@ -21,7 +20,7 @@ class SearchViewModel(private val liveData: MutableLiveData<AppState> = MutableL
     }
 
     fun search(q: String) {
-        searchRestRepository?.search(q, object : ApiResponseListener<ResultRecipeModel?> {
+        searchRestRepository.search(q, object : ApiResponseListener<ResultRecipeModel?> {
             override fun onSuccess(call: Call<ResultRecipeModel?>?, response: Response<ResultRecipeModel?>?) {
                 liveData.value = AppState.Success(response?.body())
             }

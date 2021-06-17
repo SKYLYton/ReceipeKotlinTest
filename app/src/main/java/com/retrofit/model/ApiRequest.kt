@@ -1,5 +1,6 @@
 package com.recipes.retrofit.model
 
+import com.receipe.Constants
 import com.recipes.retrofit.model.recipe.ResultRecipeModel
 import retrofit2.Call;
 import retrofit2.http.*
@@ -7,11 +8,15 @@ import retrofit2.http.*
 interface ApiRequest {
 
     companion object {
-        const val URL = "https://api.edamam.com/search/"
+        const val URL = "https://api.edamam.com/"
     }
 
-    @GET("users/sing-up/")
-    fun getRecipes(@Query("q") q: String?): Call<ResultRecipeModel?>?
+    @GET("search")
+    fun getRecipes(
+        @Query("q") q: String?,
+        @Query("app_id") app_id: String? = Constants.appId,
+        @Query("app_key") app_key: String? = Constants.appKey
+    ): Call<ResultRecipeModel?>?
 
 
 }
