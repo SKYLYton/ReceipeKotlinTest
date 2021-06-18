@@ -41,15 +41,16 @@ class SearchRecipeFragment : Fragment() {
         viewModel.getLiveData().observe(viewLifecycleOwner, Observer { renderData(it) })
 
         initControls()
-
     }
 
     private fun initControls() {
+        // TODO: сделать через лямбду
         adapter.onClickItemListener = object : OnClickItemListener {
             override fun onClick(orderModel: Hit?, pos: Int) {
 
             }
         }
+
         binding.recGoods.adapter = adapter
 
         binding.editTextSearch.addTextChangedListener(object : TextWatcher {
@@ -90,6 +91,7 @@ class SearchRecipeFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        adapter.removeListener()
     }
 
 }

@@ -20,7 +20,9 @@ class SearchViewModel(private val liveData: MutableLiveData<AppState> = MutableL
     }
 
     fun search(q: String) {
-        searchRestRepository.search(q, object : ApiResponseListener<ResultRecipeModel?> {
+        // TODO: Сделать запрос с помощью RX
+        // TODO: 17.06.2021 Вынести запрос в Loader 
+        var call = searchRestRepository.search(q, object : ApiResponseListener<ResultRecipeModel?> {
             override fun onSuccess(call: Call<ResultRecipeModel?>?, response: Response<ResultRecipeModel?>?) {
                 liveData.value = AppState.Success(response?.body())
             }
