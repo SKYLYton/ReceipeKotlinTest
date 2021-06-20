@@ -1,5 +1,6 @@
 package com.aymarja.adapters.goods
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,18 +8,16 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.receipe.R
-import com.receipe.fragments.search_recipe.adapters.goods.OnClickItemListener
-import com.recipes.retrofit.model.recipe.Hit
-import com.recipes.retrofit.model.recipe.RecipeModel
+import com.receipe.fragments.search_recipe.model.Recipe
 
 class RecipesAdapter :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var list: List<Hit> = emptyList()
+    private var list: List<Recipe> = emptyList()
 
-    var onClickItemListener: OnClickItemListener? = null
+    var onClickItemListener: ((Recipe) -> Unit)? = null
 
-    fun setList(list: List<Hit>){
+    fun setList(list: List<Recipe>){
         this.list = list
         notifyDataSetChanged()
     }
@@ -38,13 +37,13 @@ class RecipesAdapter :
     }
 
     private fun initItem(viewHolder: ViewHolder, position: Int) {
-        val recipeModel: Hit = list[position]
+        val recipeModel: Recipe = list[position]
 
-        viewHolder.textViewName.text = recipeModel.recipe.label
-        viewHolder.textViewCalories.text = recipeModel.recipe.calories.toString()
+        viewHolder.textViewName.text = recipeModel.label
+        viewHolder.textViewCalories.text = recipeModel.calories.toString()
 
         viewHolder.mainView.setOnClickListener {
-            onClickItemListener?.onClick(recipeModel, position)
+            onClickItemListener?.invoke(recipeModel)
         }
 
     }

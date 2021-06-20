@@ -1,12 +1,9 @@
 package com.recipes.di
 
-import com.recipes.fragments.search_recipe.SearchRestRepositoryImpl
-import com.recipes.retrofit.model.ApiRequest
+import com.receipe.fragments.search_recipe.SearchLoaderImpl
 import com.recipes.retrofit.model.ApiRequestImpl
 import dagger.Module
 import dagger.Provides
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 @Module
@@ -18,7 +15,7 @@ class RepositoryModule {
     }
 
     @Provides
-    fun provideSearchRepository(apiRequestImpl: ApiRequestImpl): SearchRestRepositoryImpl {
-        return SearchRestRepositoryImpl(apiRequestImpl)
+    fun provideSearchRepository(apiRequestImpl: ApiRequestImpl): SearchLoaderImpl {
+        return SearchLoaderImpl(apiRequestImpl)
     }
 }

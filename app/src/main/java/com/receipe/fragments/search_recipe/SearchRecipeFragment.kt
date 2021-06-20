@@ -10,10 +10,14 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
+import androidx.navigation.NavHost
+import androidx.navigation.NavHostController
+import androidx.navigation.fragment.findNavController
 import com.aymarja.adapters.goods.RecipesAdapter
+import com.receipe.R
 import com.receipe.databinding.FragmentSearchRecipeBinding
-import com.receipe.fragments.search_recipe.adapters.goods.OnClickItemListener
-import com.recipes.retrofit.model.recipe.Hit
+import com.receipe.fragments.search_recipe.model.ResultSearchRecipe
 import com.recipes.retrofit.model.recipe.ResultRecipeModel
 
 class SearchRecipeFragment : Fragment() {
@@ -44,11 +48,9 @@ class SearchRecipeFragment : Fragment() {
     }
 
     private fun initControls() {
-        // TODO: сделать через лямбду
-        adapter.onClickItemListener = object : OnClickItemListener {
-            override fun onClick(orderModel: Hit?, pos: Int) {
 
-            }
+        adapter.onClickItemListener = {
+            findNavController().navigate(R.id.action_searchRecipeFragment_to_recipeFragment)
         }
 
         binding.recGoods.adapter = adapter
@@ -74,8 +76,8 @@ class SearchRecipeFragment : Fragment() {
     private fun renderData(appState: AppState) {
         when (appState) {
             is AppState.Success<*> -> {
-                val recipes = appState.model as ResultRecipeModel
-                adapter.setList(recipes.hits)
+                val recipes = appState.model as ResultSearchRecipe
+                adapter.setList(recipes.recipes)
             }
             is AppState.Loading -> {
             }

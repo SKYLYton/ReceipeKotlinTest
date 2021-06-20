@@ -3,15 +3,23 @@ package com.recipes.fragments.search_recipe
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.App
+import com.receipe.fragments.search_recipe.SearchLoaderImpl
+import com.receipe.fragments.search_recipe.model.ResultSearchRecipe
 import com.recipes.retrofit.model.ApiResponseListener
 import com.recipes.retrofit.model.recipe.ResultRecipeModel
+import io.reactivex.Scheduler
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.observers.DisposableSingleObserver
+import io.reactivex.schedulers.Schedulers
 import retrofit2.Call
 import retrofit2.Response
 import javax.inject.Inject
 
-class SearchViewModel(private val liveData: MutableLiveData<AppState> = MutableLiveData()) : ViewModel() {
+class SearchViewModel(private val liveData: MutableLiveData<AppState> = MutableLiveData()) :
+    ViewModel() {
 
-    @Inject lateinit var searchRestRepository: SearchRestRepositoryImpl
+    @Inject
+    lateinit var searchLoader: SearchLoaderImpl
 
     fun getLiveData() = liveData
 
@@ -20,9 +28,7 @@ class SearchViewModel(private val liveData: MutableLiveData<AppState> = MutableL
     }
 
     fun search(q: String) {
-        // TODO: Сделать запрос с помощью RX
-        // TODO: 17.06.2021 Вынести запрос в Loader 
-        var call = searchRestRepository.search(q, object : ApiResponseListener<ResultRecipeModel?> {
+/*        searchRestRepository.search(q, object : ApiResponseListener<ResultRecipeModel?> {
             override fun onSuccess(call: Call<ResultRecipeModel?>?, response: Response<ResultRecipeModel?>?) {
                 liveData.value = AppState.Success(response?.body())
             }
@@ -32,6 +38,16 @@ class SearchViewModel(private val liveData: MutableLiveData<AppState> = MutableL
             }
 
             override fun onFailure(call: Call<ResultRecipeModel?>?, throwable: Throwable?) {
+                liveData.value = AppState.Failure
+            }
+        })*/
+
+        searchLoader.search(q, object : DisposableSingleObserver<ResultSearchRecipe>() {
+            override fun onSuccess(t: ResultSearchRecipe) {
+                liveData.value = AppState.Success(t)
+            }
+
+            override fun onError(e: Throwable) {
                 liveData.value = AppState.Failure
             }
         })
