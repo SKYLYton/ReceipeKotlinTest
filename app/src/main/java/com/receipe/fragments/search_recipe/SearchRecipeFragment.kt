@@ -3,22 +3,16 @@ package com.recipes.fragments.search_recipe
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavController
-import androidx.navigation.NavHost
-import androidx.navigation.NavHostController
-import androidx.navigation.fragment.findNavController
+import androidx.navigation.Navigation
 import com.aymarja.adapters.goods.RecipesAdapter
-import com.receipe.R
 import com.receipe.databinding.FragmentSearchRecipeBinding
 import com.receipe.fragments.search_recipe.model.ResultSearchRecipe
-import com.recipes.retrofit.model.recipe.ResultRecipeModel
 
 class SearchRecipeFragment : Fragment() {
 
@@ -45,15 +39,23 @@ class SearchRecipeFragment : Fragment() {
         viewModel.getLiveData().observe(viewLifecycleOwner, Observer { renderData(it) })
 
         initControls()
+
+        viewModel.gelSavedRecipes()
     }
 
     private fun initControls() {
 
         adapter.onClickItemListener = {
-            findNavController().navigate(R.id.action_searchRecipeFragment_to_recipeFragment)
+            val action = SearchRecipeFragmentDirections.actionSearchRecipeFragmentToRecipeFragment()
+            Navigation.findNavController(binding.root).navigate(action)
         }
 
         binding.recGoods.adapter = adapter
+
+        binding.buttonHistory.setOnClickListener {
+            val action = SearchRecipeFragmentDirections.actionSearchRecipeFragmentToHistoryFragment()
+            Navigation.findNavController(binding.root).navigate(action)
+        }
 
         binding.editTextSearch.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {

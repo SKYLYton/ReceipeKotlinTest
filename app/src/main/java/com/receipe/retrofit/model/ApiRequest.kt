@@ -4,6 +4,7 @@ import com.receipe.Constants
 import com.recipes.retrofit.model.recipe.ResultRecipeModel
 import io.reactivex.Single
 import retrofit2.Call;
+import retrofit2.Response
 import retrofit2.http.*
 
 interface ApiRequest {
@@ -17,7 +18,5 @@ interface ApiRequest {
         @Query("q") q: String?,
         @Query("app_id") app_id: String? = Constants.appId,
         @Query("app_key") app_key: String? = Constants.appKey
-    ): Single<ResultRecipeModel?>?
-
-
+    ): Single<Response<ResultRecipeModel>>
 }

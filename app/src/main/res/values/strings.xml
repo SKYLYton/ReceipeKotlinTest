@@ -2,8 +2,9 @@
     <string name="app_name">Receipe</string>
 
     //main activity
-    <!--goods frg-->
+    <!--recipe frg-->
     <string name="search">Поиск рецептов</string>
+    <string name="history">История</string>
     <string name="looking_for">Что ищете?</string>
     <string name="pieces">шт.</string>
     <string name="title_activity_main2">MainActivity</string>
@@ -11,5 +12,7 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
 
+    <!--history frg-->
+    <string name="search_history">История поиска</string>
 
 </resources>

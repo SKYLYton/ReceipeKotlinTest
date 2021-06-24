@@ -27,5 +27,5 @@ data class ResultRecipeModel(
 
     @SerializedName("hits")
     @Expose
-    var hits: List<Hit>
+    var hits: List<Hit> = listOf()
 )

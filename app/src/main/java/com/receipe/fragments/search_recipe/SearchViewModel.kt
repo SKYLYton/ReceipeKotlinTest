@@ -2,24 +2,20 @@ package com.recipes.fragments.search_recipe
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.App
-import com.receipe.fragments.search_recipe.SearchLoaderImpl
+import com.receipe.App
+import com.receipe.fragments.search_recipe.LoaderApi
 import com.receipe.fragments.search_recipe.model.ResultSearchRecipe
-import com.recipes.retrofit.model.ApiResponseListener
-import com.recipes.retrofit.model.recipe.ResultRecipeModel
-import io.reactivex.Scheduler
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
-import retrofit2.Call
-import retrofit2.Response
 import javax.inject.Inject
 
 class SearchViewModel(private val liveData: MutableLiveData<AppState> = MutableLiveData()) :
     ViewModel() {
 
     @Inject
-    lateinit var searchLoader: SearchLoaderImpl
+    lateinit var loaderApi: LoaderApi
 
     fun getLiveData() = liveData
 
@@ -28,28 +24,36 @@ class SearchViewModel(private val liveData: MutableLiveData<AppState> = MutableL
     }
 
     fun search(q: String) {
-/*        searchRestRepository.search(q, object : ApiResponseListener<ResultRecipeModel?> {
-            override fun onSuccess(call: Call<ResultRecipeModel?>?, response: Response<ResultRecipeModel?>?) {
-                liveData.value = AppState.Success(response?.body())
-            }
+        loaderApi.getRecipes(q).subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : DisposableSingleObserver<ResultSearchRecipe>() {
+                override fun onSuccess(t: ResultSearchRecipe) {
+                    if (t.recipes.isEmpty()) return
+                    liveData.value = AppState.Success(t)
+                }
 
-            override fun onError(call: Call<ResultRecipeModel?>?, response: Response<ResultRecipeModel?>?) {
-                liveData.value = AppState.Error(response?.code())
-            }
+                override fun onError(e: Throwable) {
+                    liveData.value = AppState.Error(0)
+                }
 
-            override fun onFailure(call: Call<ResultRecipeModel?>?, throwable: Throwable?) {
-                liveData.value = AppState.Failure
-            }
-        })*/
+            })
+    }
 
-        searchLoader.search(q, object : DisposableSingleObserver<ResultSearchRecipe>() {
-            override fun onSuccess(t: ResultSearchRecipe) {
-                liveData.value = AppState.Success(t)
-            }
+    fun gelSavedRecipes() {
+        Single.fromCallable {
+            loaderApi.getAllRecipeItem()
+        }.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : DisposableSingleObserver<ResultSearchRecipe>() {
+                override fun onSuccess(t: ResultSearchRecipe) {
+                    if (t.recipes.isEmpty()) return
+                    liveData.value = AppState.Success(t)
+                }
 
-            override fun onError(e: Throwable) {
-                liveData.value = AppState.Failure
-            }
-        })
+                override fun onError(e: Throwable) {
+                    liveData.value = AppState.Error(0)
+                }
+
+            })
     }
 }

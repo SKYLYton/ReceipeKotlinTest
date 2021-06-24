@@ -1,4 +1,4 @@
-package com.retrofit.model.recipe;/*
+package com.receipe.retrofit.model.recipe;/*
 package com.recipes.retrofit.model.recipe;
 
 -----------------------------------com.goods.Ca.java-----------------------------------

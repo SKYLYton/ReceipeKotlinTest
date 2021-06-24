@@ -1,6 +1,7 @@
-package com
+package com.receipe
 
 import android.app.Application
+import com.receipe.di.DatabaseModule
 import com.recipes.di.AppComponent
 import com.recipes.di.DaggerAppComponent
 
@@ -17,6 +18,8 @@ class App : Application() {
     }
 
     private fun initDagger() {
-        appComponent = DaggerAppComponent.builder().build()
+        appComponent =
+            DaggerAppComponent.builder().databaseModule(DatabaseModule(instance.applicationContext))
+                .build()
     }
 }
