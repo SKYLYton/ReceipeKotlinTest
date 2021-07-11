@@ -14,7 +14,7 @@ class LoaderApi @Inject constructor(
 ) {
 
     suspend fun getRecipes(q: String): ResultSearchRecipe {
-        val recipes = apiRequestWorker.getRecipes(q)
+        val recipes = apiRequestWorker.getRecipes(q.lowercase())
         val recipeItems = mapperSearchModelMapper.mapToRecipeItems(recipes)
         insertRecipeItems(recipeItems)
 
