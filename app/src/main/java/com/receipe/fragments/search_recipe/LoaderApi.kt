@@ -22,7 +22,7 @@ class LoaderApi @Inject constructor(
     }
 
     suspend fun saveSearchWord(q: String) {
-        insertSearchWord(q)
+        insertSearchWord(q.lowercase())
     }
 
     private suspend fun insertSearchWord(q: String) {
