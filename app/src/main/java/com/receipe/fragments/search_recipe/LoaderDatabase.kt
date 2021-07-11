@@ -8,7 +8,7 @@ import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-class LoaderDatabase @Inject constructor(var recipeDao: RecipeDao) {
+class LoaderDatabase constructor(var recipeDao: RecipeDao) {
 
 
 }

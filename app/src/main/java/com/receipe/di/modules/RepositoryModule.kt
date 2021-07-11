@@ -1,7 +1,7 @@
-package com.recipes.di
+package com.receipe.di.modules
 
+import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.receipe.fragments.search_recipe.LoaderApi
-import com.receipe.fragments.search_recipe.LoaderDatabase
 import com.receipe.fragments.search_recipe.SearchModelMapper
 import com.receipe.retrofit.converter.ResponseConverter
 import com.receipe.retrofit.model.ApiRequestWorker
@@ -14,6 +14,7 @@ import io.reactivex.schedulers.Schedulers
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -21,14 +22,22 @@ class RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideRetrofit(): Retrofit {
+    @Named("recipe_api_url")
+    fun provideURL(): String {
+        return "https://api.edamam.com/"
+    }
+
+    @Provides
+    @Singleton
+    fun provideRetrofit(@Named("recipe_api_url") url: String): Retrofit {
+/*
         val rxAdapter = RxJava2CallAdapterFactory
             .createWithScheduler(Schedulers.io())
-
+*/
         return Retrofit.Builder()
-            .baseUrl(ApiRequest.URL)
+            .baseUrl(url)
             .addConverterFactory(GsonConverterFactory.create())
-            .addCallAdapterFactory(rxAdapter)
+            //.addCallAdapterFactory(CoroutineCallAdapterFactory())
             .build()
     }
 
@@ -53,10 +62,9 @@ class RepositoryModule {
     fun provideLoaderApi(
         apiRequestWorker: ApiRequestWorker,
         mapper: SearchModelMapper,
-        loaderDatabase: LoaderDatabase,
         dao: RecipeDao
     ): LoaderApi {
-        return LoaderApi(apiRequestWorker, mapper, loaderDatabase, dao)
+        return LoaderApi(apiRequestWorker, mapper, dao)
     }
 
 }

@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">Receipe</string>
 
+    //tabs
+    <string name="tab_text_1">Поиск</string>
+    <string name="tab_text_2">История</string>
+
     //main activity
     <!--recipe frg-->
     <string name="search">Поиск рецептов</string>
@@ -14,5 +18,24 @@
 
     <!--history frg-->
     <string name="search_history">История поиска</string>
+    <string name="title_activity_test2">TestActivity2</string>
+
+    <!--auth frg-->
+    <string name="enter_number_phone">Введите номер телефона</string>
+    <string name="enter_number_phone_error">Такого номера нет в базе данных</string>
+    <string name="enter_number_phone_error_length">Номер телефона должен состоять из 11 цифр!</string>
+    <string name="enter_password">Введите пароль</string>
+    <string name="enter_password_error_length">Пароль должен состоять из 8 или более символов!</string>
+    <string name="sign_in">Войти</string>
+    <string name="forgot_your_password">Забыли пароль?</string>
+    <string name="recover_password">Восстановить</string>
+    <string name="or_for_registration">Или</string>
+    <string name="sign_up">Зарегистрироваться</string>
+    <string name="information_text_of_loss_of_a_phone_number">
+        В случае утери номера телефона или смены номера для восстановления доступа к личному кабинету
+        обратитесь в офис организации
+    </string>
+    <string name="support_phone_number">8 555 555 55 55</string>
+
 
 </resources>

@@ -11,16 +11,20 @@ import io.reactivex.Single
 @Dao
 interface RecipeDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertRecipeItem(project: RecipeItem)
+    suspend fun insertRecipeItem(project: RecipeItem)
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertSearchWord(project: SearchItem)
+    suspend fun insertRecipeItems(projects: List<RecipeItem>)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertSearchWord(project: SearchItem)
 
     @Query("SELECT * FROM searchitem")
-    fun getAllSearchItem(): Single<List<SearchItem>>
+    suspend fun getAllSearchItem(): List<SearchItem>
 
     @Query("SELECT * FROM recipeitem")
-    fun getAllRecipeItem(): List<RecipeItem>
+    suspend fun getAllRecipeItem(): List<RecipeItem>
 
     @Query("DELETE FROM recipeitem")
-    fun nukeTableRecipeItem()
+    suspend fun nukeTableRecipeItem()
 }

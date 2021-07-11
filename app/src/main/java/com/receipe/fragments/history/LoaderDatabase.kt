@@ -11,16 +11,15 @@ class LoaderDatabase @Inject constructor(
     var dao: RecipeDao
 ) {
 
-    fun getHistory(): Single<List<HistoryItem>> {
-        return dao.getAllSearchItem().map { it ->
-            val list: MutableList<HistoryItem> = mutableListOf()
+    suspend fun getHistory(): List<HistoryItem> {
+        val result = dao.getAllSearchItem()
+        val list: MutableList<HistoryItem> = mutableListOf()
 
-            it.forEach {
-                list.add(historyModelMapper.mapToHistoryItem(it))
-            }
-
-            list
+        result.forEach {
+            list.add(historyModelMapper.mapToHistoryItem(it))
         }
+
+        return list
     }
 
 }

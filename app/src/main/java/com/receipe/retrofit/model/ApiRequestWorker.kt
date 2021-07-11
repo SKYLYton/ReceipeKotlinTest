@@ -2,9 +2,11 @@ package com.receipe.retrofit.model
 
 import com.recipes.retrofit.model.recipe.ResultRecipeModel
 import io.reactivex.Single
+import kotlinx.coroutines.Deferred
 
 interface ApiRequestWorker {
-    fun getRecipes(
+    suspend fun getRecipes(
         q: String?
-    ): Single<ResultRecipeModel>
+    ): ResultRecipeModel
+
 }

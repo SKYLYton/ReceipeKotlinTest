@@ -10,7 +10,7 @@ data class RecipeItem(
     @PrimaryKey(autoGenerate = true)
     var id: Long = 0,
     @ColumnInfo(name = "name")
-    var name: String? = null,
+    var name: String? = "",
     @ColumnInfo(name = "calories")
-    var calories: Double? = null
+    var calories: Double? = 0.0
 )

@@ -1,14 +1,15 @@
-package com.receipe.di
+package com.receipe.di.modules
 
 import android.content.Context
-import com.receipe.App
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
 
 @Module
-class MainModule constructor(var context: Context) {
+class AppModule(val context: Context) {
     @Provides
     @Singleton
-    fun provideContext(): Context = context
+    fun provideContext(): Context {
+        return context
+    }
 }

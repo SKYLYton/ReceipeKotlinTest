@@ -8,17 +8,20 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import com.aymarja.adapters.goods.RecipesAdapter
+import com.receipe.App
 import com.receipe.databinding.FragmentSearchRecipeBinding
 import com.receipe.fragments.search_recipe.model.ResultSearchRecipe
+import javax.inject.Inject
 
 class SearchRecipeFragment : Fragment() {
 
     private var _binding: FragmentSearchRecipeBinding? = null
     private val binding: FragmentSearchRecipeBinding get() = _binding!!
-    private lateinit var viewModel: SearchViewModel
+    @Inject
+    lateinit var viewModel: SearchViewModel
+
     private val adapter = RecipesAdapter()
 
     override fun onCreateView(
@@ -29,18 +32,22 @@ class SearchRecipeFragment : Fragment() {
 
         _binding = binding
 
+        val searchRecipeComponent = App.instance.applicationComponent.getSearchRecipeComponentFactory().create()
+        searchRecipeComponent.inject(this)
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this).get(SearchViewModel::class.java)
 
-        viewModel.getLiveData().observe(viewLifecycleOwner, Observer { renderData(it) })
+        viewModel.liveData.observe(viewLifecycleOwner, Observer { renderData(it) })
+
+        viewModel.start()
 
         initControls()
 
-        viewModel.gelSavedRecipes()
+        viewModel.getSavedRecipes()
     }
 
     private fun initControls() {
@@ -78,16 +85,19 @@ class SearchRecipeFragment : Fragment() {
     private fun renderData(appState: AppState) {
         when (appState) {
             is AppState.Success<*> -> {
-                val recipes = appState.model as ResultSearchRecipe
-                adapter.setList(recipes.recipes)
+                if(appState.model is ResultSearchRecipe) {
+                    adapter.setList(appState.model.recipes)
+                }
             }
             is AppState.Loading -> {
+
             }
             is AppState.InvalidData -> {
             }
             is AppState.Failure -> {
             }
             is AppState.Error -> {
+                appState.code
             }
         }
     }

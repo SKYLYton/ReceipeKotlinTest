@@ -8,9 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import com.aymarja.adapters.goods.HistoryAdapter
+import com.receipe.App
 import com.receipe.databinding.HistoryFragmentBinding
 import com.receipe.fragments.history.model.HistoryItem
 import com.recipes.fragments.history.AppState
+import javax.inject.Inject
 
 class HistoryFragment : Fragment() {
 
@@ -18,7 +20,8 @@ class HistoryFragment : Fragment() {
     private val binding: HistoryFragmentBinding get() = _binding!!
     private val adapter = HistoryAdapter()
 
-    private lateinit var viewModel: HistoryViewModel
+    @Inject
+    lateinit var viewModel: HistoryViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,14 +31,18 @@ class HistoryFragment : Fragment() {
 
         _binding = binding
 
+        val historyComponent = App.instance.applicationComponent.getHistoryComponentFactory().create()
+        historyComponent.inject(this)
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this).get(HistoryViewModel::class.java)
 
-        viewModel.getLiveData().observe(viewLifecycleOwner, Observer { renderData(it) })
+        viewModel.liveData.observe(viewLifecycleOwner, Observer { renderData(it) })
+
+        viewModel.start()
 
         viewModel.getHistory()
 

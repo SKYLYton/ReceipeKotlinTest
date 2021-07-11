@@ -12,7 +12,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Receipe">
-        <activity android:name=".MainActivity">
+        <activity android:name=".ServiceActivity"></activity>
+
+        <service
+            android:name=".serveces.MyIntentService"
+            android:exported="false" />
+        <service
+            android:name=".serveces.MyService"
+            android:enabled="true"
+            android:exported="true" />
+
+        <activity
+            android:name=".MainActivity"
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

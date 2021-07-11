@@ -1,4 +1,4 @@
-package com.receipe.di
+package com.receipe.di.modules
 
 import com.receipe.fragments.history.HistoryModelMapper
 import com.receipe.fragments.search_recipe.SearchModelMapper
